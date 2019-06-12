@@ -1,0 +1,159 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\usepackage{styles/ntnu}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage{enumerate}
+\usepackage[dvips]{color}
+\usepackage{url}
+
+
+%%% DOCUMENT ---------------------------------------------------------------------------------------
+
+\begin{document}
+\title{Probabilistic AI}{DT8122 — \textbf{Project Assignment - Uncertainty Quantification}}
+\author{\textcolor{blue}{\href{mailto:dt8122@idi.ntnu.no}{dt8122@idi.ntnu.no}}}
+\begin{center}
+\vspace{-0.5cm}
+Summer 2019
+\end{center}
+
+%---------------------------------------------------------------------------------------------------
+
+\section{Introduction}
+\label{sec:Introduction}
+
+Uncertainty modeling and quantification is relevant in many real world applications. One possible
+approach to this task is to use Bayesian methods in order to obtain the probability density of the
+quantities of interest and use the obtained full densities to compute other quantities of interest
+such as \textit{prediction
+intervals}\footnote{\url{https://en.wikipedia.org/wiki/Prediction_interval}}. Traditionally, we
+would resort to linear models in order to have a computationally feasible solution to the inference
+problem. However, with the recent advances in Probabilistic AI, we are able to extend the space of
+possible models with non-linear models. The objective of this project assignment is to explore some
+of those techniques in a set of prediction tasks.
+
+\section{Task}
+\label{sec:Task}
+
+The task concerns generation of prediction intervals (PIs) along with point predictions by applying
+neural networks for quantifying uncertainty in regression tasks.
+
+First, we ask you to choose and implement two recent deep generative modeling techniques from
+Section~\ref{sec:Models}. Second, we ask you to identify shortcomings or limitations of the
+implemented techniques. Finally, we ask you to implement some possible improvements (see
+Section~\ref{sec:Research}).
+
+Each part should be accompanied by empirical evaluation (see Section~\ref{sec:Evaluation}) using the
+provided datasets (see Section~\ref{sec:Datasets}) and discussion of the results. This all compiled
+into a final project report (max. 10 pages) accompanied with the code to reproduce your results.
+
+\subsection{Models}
+\label{sec:Models}
+
+You are expected to implement a deep probabilistic regression model for uncertainty estimation and
+use this model to generate prediction intervals and point predictions. For that you have to choose
+two of the following techniques:
+
+\begin{itemize}
+ \item Dropout as a Bayesian Approximation~\cite{pmlr-v48-gal16},
+ \item Bayes by Backprop~\cite{pmlr-v37-blundell15},
+ \item Multiplicative Normalizing Flows~\cite{pmlr-v70-louizos17a},
+ \item Bayes by Hypernet~\cite{krueger2017bayesian,DBLP:journals/corr/abs-1711-01297}.
+\end{itemize}
+
+
+\subsection{Research of Shortcomings, Limitations and Possible Improvements}
+\label{sec:Research}
+
+Given you have implemented the two selected approaches, discuss their respective shortcomings or
+limitations and implement at least one possible improvement. Compare with previous results and
+report your findings.
+
+\subsection{Datasets}
+\label{sec:Datasets}
+
+The provided datasets are the same as in Gal and Ghahramani~\cite{pmlr-v48-gal16} and Pearce et
+al.~\cite{pmlr-v80-pearce18a}. All datasets have target values ($y$) placed in the last column.
+
+\subsection{Evaluation}
+\label{sec:Evaluation}
+
+For evaluation of your models use the tail 10\% of a dataset as a test set. Measure at least root
+mean squared error (RMSE) for point predictions, and prediction interval coverage probability (PICP)
+and mean prediction interval width (MPIW) for 95\% prediction intervals.
+
+Following the notation from Pearce et al.~\cite{pmlr-v80-pearce18a},  let $\mathbf{x}_{i} \in
+\mathbb{R}^{D}$ be the $i$th $D$ dimensional input features corresponding to target observation
+$y_i$, where $1 \leq i \leq n$ for $n$ data points.
+The predicted lower and upper bounds of PI are denoted by $\hat{y}_{Li}$ and $\hat{y}_{Ui}$. The PI
+is then defined as
+%
+\begin{equation*}
+P\left(\hat{y}_{L i} \leq y_{i} \leq \hat{y}_{U i}\right) \geq \gamma,
+\end{equation*}
+%
+where $\gamma$ is $0.95$ for 95\% prediction interval.
+
+\noindent
+PICP is calculated as following:
+%
+\begin{equation*}
+k_i =
+\begin{cases}
+  1 & \text{if}\ \hat{y}_{Li} \leq y_{i} \leq \hat{y}_{Ui}; \\
+  0 & \text{otherwise},
+\end{cases}
+\end{equation*}
+%
+\begin{equation*}
+c = \sum_{i=1}^{n} k_i,
+\end{equation*}
+%
+\begin{equation*}
+PICP = \frac{c}{n}.
+\end{equation*}
+%
+\noindent
+MPIW is calculated as following:
+%
+\begin{equation*}
+MPIW = \frac{1}{n}\sum_{i=1}^{n} \hat{y}_{Ui} - \hat{y}_{Li}.
+\end{equation*}
+
+%---------------------------------------------------------------------------------------------------
+
+\section{Submission Requirements}
+\label{sec:SubmissionRequirements}
+
+We expect you to submit the following:
+
+\begin{itemize}
+	\item {\bf Code} with your implementation in Python using Pyro or PyTorch of two of the four
+	techniques of uncertainty modeling with neural networks.
+	    \begin{itemize}
+	        \item You can have the code in a Jupyter notebook, however you should make sure the code is
+	        not dependent on a system specific configuration. To make sure that we can execute your
+	        code, provide \texttt{requirements.txt} file, \textit{Dockerfile} or test it in Google
+	        Colab\footnote{\url{https://colab.research.google.com}}.
+	    \end{itemize}
+	\item {\bf Report} that should include your model choices, inference methods, results from
+	empirical evaluation, findings and discussion.
+\end{itemize}
+
+\noindent
+All assignment artifacts are to be sent as a ZIP file to the email address \url{dt8122@idi.ntnu.no}.
+The deadline is 12 July 2019 AoE (Anywhere on Earth).
+
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}
+
+%%% END OF DOCUMENT --------------------------------------------------------------------------------

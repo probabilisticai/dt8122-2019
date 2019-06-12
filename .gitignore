@@ -1,0 +1,33 @@
+# Specifies intentionally untracked files to ignore when using Git.
+# http://git-scm.com/docs/gitignore
+
+# OS X
+.DS_Store
+
+# TeX
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.xdv
+
+# Python
+__pycache__
+.ipynb_checkpoints
+*.pyc
+
+# IntelliJ
+*.iml
+.idea/
+
+# Folders
+temp/
+tmp/
+runs/
